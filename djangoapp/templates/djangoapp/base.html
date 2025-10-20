@@ -33,7 +33,7 @@
                             <span class="navbar-text me-3">Welcome, {{ user.username }}!</span>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'djangoapp:logout' %}">Logout</a>
+                            <a class="nav-link" href="#" onclick="showLogoutAlert()" style="cursor: pointer;">Logout</a>
                         </li>
                     {% else %}
                         <li class="nav-item">
@@ -53,19 +53,28 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Login</h5>
+                    <h5 class="modal-title">Login to Best Cars</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <form method="post" action="{% url 'djangoapp:login' %}">
                     <div class="modal-body">
                         {% csrf_token %}
+                        {% if message %}
+                            <div class="alert alert-danger">{{ message }}</div>
+                        {% endif %}
                         <div class="mb-3">
                             <label for="username" class="form-label">Username:</label>
-                            <input type="text" class="form-control" id="username" name="username" required>
+                            <input type="text" class="form-control" id="username" name="username" required 
+                                   placeholder="Enter your username">
                         </div>
                         <div class="mb-3">
                             <label for="psw" class="form-label">Password:</label>
-                            <input type="password" class="form-control" id="psw" name="psw" required>
+                            <input type="password" class="form-control" id="psw" name="psw" required
+                                   placeholder="Enter your password">
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="rememberMe">
+                            <label class="form-check-label" for="rememberMe">Remember me</label>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -73,6 +82,9 @@
                         <button type="submit" class="btn btn-primary">Login</button>
                     </div>
                 </form>
+                <div class="text-center p-3">
+                    <small>Don't have an account? <a href="{% url 'djangoapp:registration' %}">Sign up here</a></small>
+                </div>
             </div>
         </div>
     </div>
@@ -84,14 +96,20 @@
     </main>
 
     <!-- Logout Alert Script -->
-    {% if user.is_authenticated %}
     <script>
         function showLogoutAlert() {
             if (confirm("Are you sure you want to logout?")) {
                 window.location.href = "{% url 'djangoapp:logout' %}";
             }
         }
+        
+        // Auto-show login modal if there's a login error
+        {% if message %}
+            document.addEventListener('DOMContentLoaded', function() {
+                var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+                loginModal.show();
+            });
+        {% endif %}
     </script>
-    {% endif %}
 </body>
 </html>
