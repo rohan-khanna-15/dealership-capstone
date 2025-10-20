@@ -45,13 +45,18 @@ app.get('/fetchDealer/:id', (req, res) => {
     }
 });
 
-// Fetch dealers by state
+// Fetch dealers by state - FIXED VERSION
 app.get('/fetchDealers/:state', (req, res) => {
     const state = req.params.state;
+    console.log(`Filtering dealers by state: ${state}`);
+    
     const stateDealers = dealerships.filter(d => 
-        d.state.toLowerCase() === state.toLowerCase() || 
-        d.st.toLowerCase() === state.toLowerCase()
+        d.state.toLowerCase().includes(state.toLowerCase()) || 
+        d.st.toLowerCase() === state.toLowerCase() ||
+        d.city.toLowerCase().includes(state.toLowerCase())
     );
+    
+    console.log(`Found ${stateDealers.length} dealers for state: ${state}`);
     res.json(stateDealers);
 });
 

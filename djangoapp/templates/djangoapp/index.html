@@ -1,4 +1,5 @@
 {% extends "djangoapp/base.html" %}
+{% load static %}
 
 {% block content %}
 <div class="row">
@@ -17,48 +18,76 @@
             </div>
         {% endif %}
 
-        <div class="row">
-            <div class="col-md-8">
-                <h3>Find the Best Car Dealerships</h3>
-                <p>Browse through our extensive network of car dealerships across the United States. 
-                   Read reviews from verified customers and make informed decisions about your next car purchase.</p>
-                
-                <div class="row mt-4">
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Search by State</h5>
-                                <p class="card-text">Find dealerships in your state</p>
-                                <button class="btn btn-primary">Search Dealerships</button>
-                            </div>
-                        </div>
+        <!-- State Filter -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <form method="get" action="{% url 'djangoapp:get_dealers' %}">
+                    <div class="input-group">
+                        <select name="state" class="form-select">
+                            <option value="">All States</option>
+                            <option value="Texas" {% if selected_state == "Texas" %}selected{% endif %}>Texas</option>
+                            <option value="Kansas" {% if selected_state == "Kansas" %}selected{% endif %}>Kansas</option>
+                            <option value="New York" {% if selected_state == "New York" %}selected{% endif %}>New York</option>
+                            <option value="California" {% if selected_state == "California" %}selected{% endif %}>California</option>
+                        </select>
+                        <button class="btn btn-primary" type="submit">Filter by State</button>
                     </div>
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Latest Reviews</h5>
-                                <p class="card-text">Read what customers are saying</p>
-                                <button class="btn btn-secondary">View Reviews</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                </form>
             </div>
-            
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>Quick Stats</h5>
+        </div>
+
+        <!-- Dealerships List -->
+        <div class="row">
+            <div class="col-md-12">
+                {% if selected_state %}
+                    <h3>Dealerships in {{ selected_state }}</h3>
+                {% else %}
+                    <h3>All Dealerships</h3>
+                {% endif %}
+                
+                {% if dealership_list %}
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>City</th>
+                                    <th>State</th>
+                                    <th>Address</th>
+                                    <th>Zip</th>
+                                    {% if user.is_authenticated %}
+                                        <th>Actions</th>
+                                    {% endif %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for dealer in dealership_list %}
+                                <tr>
+                                    <td>
+                                        <a href="{% url 'djangoapp:dealer_details' dealer.id %}" class="text-decoration-none">
+                                            {{ dealer.full_name }}
+                                        </a>
+                                    </td>
+                                    <td>{{ dealer.city }}</td>
+                                    <td>{{ dealer.st }}</td>
+                                    <td>{{ dealer.address }}</td>
+                                    <td>{{ dealer.zip }}</td>
+                                    {% if user.is_authenticated %}
+                                        <td>
+                                            <a href="{% url 'djangoapp:add_review' %}?dealer={{ dealer.id }}" 
+                                               class="btn btn-primary btn-sm">Post Review</a>
+                                        </td>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="card-body">
-                        <ul class="list-unstyled">
-                            <li><strong>500+</strong> Dealerships</li>
-                            <li><strong>50</strong> States Covered</li>
-                            <li><strong>10,000+</strong> Customer Reviews</li>
-                            <li><strong>95%</strong> Customer Satisfaction</li>
-                        </ul>
+                {% else %}
+                    <div class="alert alert-warning">
+                        <p>No dealerships found. Please make sure the backend service is running.</p>
                     </div>
-                </div>
+                {% endif %}
             </div>
         </div>
     </div>

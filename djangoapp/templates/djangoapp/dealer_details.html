@@ -1,0 +1,58 @@
+{% extends "djangoapp/base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        {% if dealer %}
+            <h1>{{ dealer.full_name }}</h1>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Dealership Information</h5>
+                    <p><strong>Address:</strong> {{ dealer.address }}, {{ dealer.city }}, {{ dealer.st }} {{ dealer.zip }}</p>
+                    <p><strong>Phone:</strong> (555) 123-4567</p>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'djangoapp:add_review' %}?dealer={{ dealer.id }}" class="btn btn-primary">
+                            Write a Review
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+
+        <h3>Customer Reviews</h3>
+        {% if reviews %}
+            <div class="row">
+                {% for review in reviews %}
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between">
+                                <strong>{{ review.name }}</strong>
+                                <span class="badge bg-{% if review.sentiment == 'positive' %}success{% elif review.sentiment == 'negative' %}danger{% else %}secondary{% endif %}">
+                                    {{ review.sentiment|title }}
+                                </span>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">{{ review.review }}</p>
+                                {% if review.purchase %}
+                                    <div class="mt-2">
+                                        <small class="text-muted">
+                                            <strong>Purchased:</strong> {{ review.car_make }} {{ review.car_model }} ({{ review.car_year }})
+                                            {% if review.purchase_date %}
+                                                <br><strong>Date:</strong> {{ review.purchase_date }}
+                                            {% endif %}
+                                        </small>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                <p>No reviews available for this dealership yet.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
