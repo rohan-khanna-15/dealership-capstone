@@ -1,0 +1,111 @@
+{% extends "djangoapp/base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="mb-4">Contact Us</h1>
+        
+        <div class="row">
+            <div class="col-md-8">
+                <h3>Get in Touch</h3>
+                <p class="lead">We'd love to hear from you! Whether you have questions, feedback, or need assistance, 
+                   our team is here to help.</p>
+                
+                <form class="mt-4">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="firstName" class="form-label">First Name *</label>
+                                <input type="text" class="form-control" id="firstName" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="lastName" class="form-label">Last Name *</label>
+                                <input type="text" class="form-control" id="lastName" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address *</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="subject" class="form-label">Subject *</label>
+                        <select class="form-select" id="subject" required>
+                            <option value="">Choose a subject...</option>
+                            <option value="general">General Inquiry</option>
+                            <option value="support">Technical Support</option>
+                            <option value="dealership">Dealership Partnership</option>
+                            <option value="review">Review Issue</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Message *</label>
+                        <textarea class="form-control" id="message" rows="5" 
+                                  placeholder="Please describe your inquiry in detail..." required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-lg">Send Message</button>
+                </form>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Contact Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <h6><i class="fas fa-map-marker-alt"></i> Address</h6>
+                        <p>123 Automotive Boulevard<br>
+                           Detroit, MI 48201<br>
+                           United States</p>
+                        
+                        <h6><i class="fas fa-phone"></i> Phone</h6>
+                        <p>+1 (555) 123-CARS<br>
+                           +1 (555) 123-2277</p>
+                        
+                        <h6><i class="fas fa-envelope"></i> Email</h6>
+                        <p>info@bestcars.com<br>
+                           support@bestcars.com</p>
+                        
+                        <h6><i class="fas fa-clock"></i> Business Hours</h6>
+                        <p><strong>Monday - Friday:</strong> 8:00 AM - 6:00 PM EST<br>
+                           <strong>Saturday:</strong> 9:00 AM - 4:00 PM EST<br>
+                           <strong>Sunday:</strong> Closed</p>
+                    </div>
+                </div>
+                
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h5>Quick Links</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="text-decoration-none">FAQ</a></li>
+                            <li><a href="#" class="text-decoration-none">Help Center</a></li>
+                            <li><a href="#" class="text-decoration-none">Privacy Policy</a></li>
+                            <li><a href="#" class="text-decoration-none">Terms of Service</a></li>
+                            <li><a href="#" class="text-decoration-none">Dealership Partners</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
